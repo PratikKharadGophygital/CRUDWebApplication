@@ -1,0 +1,16 @@
+[
+  {
+    "PersonID": "e4cf4f6a-4813-4444-976e-b8e36ef591db",
+    "PersonName": "sandesh",
+    "Email": "sandesh@gmail.com",
+    "DateOfBirth": "1993-01-02",
+    "Gender": "male",
+    "CountryID": "2b712f00-0bbf-4cca-80b3-0f8ebd03253d",
+    "Address": "street address 4",
+    "ReceivedNewsLetter": false
+  }
+
+  
+
+]
+

@@ -1,0 +1,120 @@
+﻿@model PersonUpdateRequest;
+@{
+    ViewBag.Title = "Update Person";
+}
+
+<a href="~/persons/index"> Back To Persons List</a>
+<h1>Edit Person</h1>
+<div>
+    @*<form asp-action="Create"  action="~/persons/Create" method="post">*@
+    <form asp-controller="Persons" asp-action="Edit" method="post">
+        <input type="hidden" asp-for="PersonID" />
+        <div>
+            <div>
+                <label>Person Name</label>
+            </div>
+            <div>
+                <input asp-for="PersonName" />
+                <span asp-validation-for="PersonName"></span>
+            </div>
+        </div>
+        <div>
+            <div>
+                <label>Email</label>
+            </div>
+            <div>
+                <input asp-for="Email" />
+                <span asp-validation-for="Email"></span>
+            </div>
+        </div>
+        <div>
+            <div>
+                <label>DateOfBirth</label>
+            </div>
+            <div>
+                <input type="date" id="DateOfBirth" name="DateOfBirth" />
+            </div>
+        </div>
+        <div>
+            <div>
+                <label>Geneder</label>
+            </div>
+            <div>
+                @{
+                    string[] genders = (string[])Enum.GetNames(typeof(GenderOptions));
+                }
+                @foreach (string gender in genders)
+                {
+                    <input type="radio" asp-for="Geneder" value="@gender" />
+                    <label for="@gender">@gender</label>
+                }
+                <span asp-validation-for="Geneder"></span>
+                    @*<input type="radio" id="Male" name="Geneder" value="Male" />
+                    <label for="Male">Male</label>
+                    <input type="radio" id="Female" name="Geneder" value="Female" />
+                    <label for="Female">Female</label>
+                    <input type="radio" id="Other" name="Geneder" value="Other" />
+                    <label for="Other">Other</label>*@
+            </div>
+        </div>
+        <div>
+            <div>
+                <label for="CountryID">Country</label>
+            </div>
+            <div>
+                @*You not need to write the foreach loop in that the benifits for using SelectListItem*@
+                <select asp-for="CountryID" asp-items="@ViewBag.Countries">
+                    <option value="">Please Select</option>
+                    <span asp-validation-for="CountryID"></span>
+                    @* @foreach (CountryResponse country in ViewBag.Countries)
+                        {
+                        <option value="@country.CountryID">@country.CountryName</option>
+                        }*@
+                </select>
+            </div>
+            <div>
+                <div>
+                    <label>Address</label>
+                </div>
+                <div>
+                    <textarea type="text" id="Address" name="Address"></textarea>
+                    <span asp-validation-for="Address"></span>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <input type="checkbox" id="ReceivedNewsLetter" name="ReceivedNewsLetter" value="true" />
+                    <label for="ReceivedNewsLetter">Received News Letter</label>
+                </div>
+            </div>
+            <div>
+                <button class="button">Update</button>
+                <div asp-validation-summary="All"></div>
+
+                @if (!string.IsNullOrEmpty(ViewBag.Errors))
+                {
+                    <ul>
+                        @foreach (string error in ViewBag.Errors)
+                        {
+                            <li> @error</li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </form>
+</div>
+
+@*
+    Jquery file is depend on each so follow same order jquery file .
+    Jquery.min.js > jquery.validate.min.js > jquery.validate.unobtrusive.min.js
+    asp-fallback-test > This tab helper help when cdns.js is failed then actived serverside downloaded js
+*@
+@section scripts
+{
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" asp-fallback-test="window.jQuery" asp-fallback-src="~/js/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.4/jquery.validate.min.js" integrity="sha512-FOhq9HThdn7ltbK8abmGn60A/EMtEzIzv1rvuh+DqzJtSGq8BRdEN0U+j0iKEIffiw/yEtVuladk6rsG4X6Uqg==" crossorigin="anonymous" referrerpolicy="no-referrer" asp-fallback-test="window.jQuery.validator" asp-fallback-src="~/js/jquery.validate.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js" integrity="sha512-o6XqxgrUsKmchwy9G5VRNWSSxTS4Urr4loO6/0hYdpWmFUfHqGzawGxeQGMDqYzxjY9sbktPbNlkIQJWagVZQg==" crossorigin="anonymous" referrerpolicy="no-referrer" asp-fallback-test="window.jQuery.validator.unobstrusive" asp-fallback-src="~/js/jquery.validate.unobtrusive.min.js"></script>
+}

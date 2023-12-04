@@ -1,0 +1,53 @@
+﻿@model IEnumerable<PersonResponse>
+
+@{
+    Layout = null;
+}
+
+@*Add css in your pdf file *@
+@*<link href="@("http://" + Context.Request.Host.ToString() + "/style.css" )" rel="stylesheet"/>*@
+
+<h1>Person</h1>
+<table>
+    <thead>
+        <tr>
+            <th>PersonName</th>
+            <th>Email</th>
+            <th>DateOfBirth</th>
+            <th>Age</th>
+            <th>CountryName</th>
+            <th>Address</th>
+            <th>ReceivedNewsLetter</th>
+
+            @*  <th>Email</th>
+                <th>Date of Birth</th>
+                <th>Age</th>
+                <th>Geneder</th>
+                <th>Country</th>
+                <th>Address</th>
+                <th>Receive News Letters</th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (PersonResponse person in Model)
+        {
+            <tr>
+                <td>@person.PersonName</td>
+                <td>@person.Email</td>
+                <td>@person.DateOfBirth?.ToString("dd MMM yyyy")</td>
+                <td>@person.Age</td>
+                <td>@person.Geneder</td>
+                <td>@person.CountryName</td>
+                <td>@person.Address</td>
+                <td>@person.ReceivedNewsLetter</td>
+                <td>
+                    @* asp-route-personID using this parameter send the personid for method  *@
+                    <a asp-controller="Persons" asp-action="Edit" asp-route-personID="@person.PersonID">Edit</a>
+                    <a asp-controller="Persons" asp-action="Delete" asp-route-personID="@person.PersonID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+

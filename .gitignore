@@ -1,0 +1,19 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/CRUDWebApplication/obj
+/CRUDWebApplication/bin
+/Entities/bin
+/Entities/obj
+/Repositories/bin/Debug/net6.0
+/Repositories/obj
+/RepositoryContracts/bin/Debug/net6.0
+/RepositoryContracts/obj
+/ServiceContracts/bin
+/ServiceContracts/obj/Debug/net6.0
+/ServiceContracts/obj/Release/net6.0
+/Services/bin
+/Services/obj
+/TestProject1/bin
+/TestProject1/obj
