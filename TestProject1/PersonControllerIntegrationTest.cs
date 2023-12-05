@@ -19,7 +19,7 @@ namespace TestProject1
 
         public PersonControllerIntegrationTest(CustomWebApplicationFactory factory)
         {
-                _client = factory.CreateClient();
+            _client = factory.CreateClient();
         }
 
         #region Index
@@ -29,12 +29,12 @@ namespace TestProject1
             //  Arrange
 
             // Act 
-              HttpResponseMessage response = await _client.GetAsync("~/Person/Index");
+            HttpResponseMessage response = await _client.GetAsync("~/Person/Index");
 
             // Assert
             response.Should().BeSuccessful();
 
-          string responseBody = await response.Content.ReadAsStringAsync();
+            string responseBody = await response.Content.ReadAsStringAsync();
 
             HtmlDocument htmlDocument = new HtmlDocument();
 
@@ -42,7 +42,7 @@ namespace TestProject1
             var document = htmlDocument.DocumentNode;
 
             document.QuerySelectorAll("table.persons").Should().NotBeNull();
-         }
+        }
         #endregion
     }
 }
