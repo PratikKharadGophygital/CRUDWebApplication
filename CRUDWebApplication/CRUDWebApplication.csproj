@@ -22,4 +22,10 @@
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
+	<!--Give the asp.net core permission automaticed generated file access the other project-->
+	<!-- Use for the Integration testing purpose need to access the program.cs file --> 
+	<ItemGroup>
+		<InternalsVisibleTo Include="TestProject1"/>
+	</ItemGroup>
+
 </Project>
