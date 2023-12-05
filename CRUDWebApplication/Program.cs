@@ -1,5 +1,7 @@
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Repositories;
+using RepositoryContracts;
 using ServiceContracts;
 using Services;
 
@@ -11,7 +13,10 @@ builder.Services.AddControllersWithViews();
 // add services into IOC container 
 // i want create the instace for life time if application is started 
 builder.Services.AddScoped<ICountriesService, CountriesService>();
+builder.Services.AddScoped<IContriesRepository, CountriesRepository>();
+
 builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IPersonsRepository, PersonRepository>();
 
 // EF core connection with sql server by default is services as scoped services 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -22,13 +27,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (builder.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
 
+
 // Setup Rotativa Converter Html To PDF  exe file.
-Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
+if (!app.Environment.IsEnvironment("Test") == false)
+{
+    Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
+}
+
 
 app.UseStaticFiles();
 

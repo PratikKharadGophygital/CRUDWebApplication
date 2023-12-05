@@ -141,14 +141,14 @@ namespace Services
             // Generate the person ID 
             person.PersonID = Guid.NewGuid();
 
-           // Add person object to persons list
-            _db.Add(person);
-           await _db.SaveChangesAsync();
+            // Add person object to persons list
+            Person persons = await  _personsRepository.AddPerson(person);
+        
 
            // _db.sp_InsertPerson(person);
 
             // common return type method call
-            return person.ToPersonResponse();
+            return persons.ToPersonResponse();
 
         
         }
@@ -163,7 +163,7 @@ namespace Services
         public async Task<PersonResponse?> GetPersonByPersonID(Guid? personID)
         {
             if (personID == null) return null;
-            
+
             Person? person = await _db.Persons.FirstOrDefaultAsync(temp => temp.PersonID == personID);
 
             if (person == null) return null;
@@ -271,8 +271,9 @@ namespace Services
             // validation 
             ValidationHelper.ModelValidation(personUpdateRequest);
 
+             Person objPersonUpdateRequest= personUpdateRequest.ToPerson();
             // get matching person object to update 
-            Person? matchingPerson = await _db.Persons.FirstOrDefaultAsync(temp => temp.PersonID == personUpdateRequest.PersonID);
+            Person? matchingPerson = await _personsRepository.UpdatePerson(objPersonUpdateRequest) ;
 
             if (matchingPerson == null)
             {
