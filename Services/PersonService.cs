@@ -155,7 +155,8 @@ namespace Services
 
         public async Task<List<PersonResponse>> GetAllPersonList()
         {
-            var persons = await _db.Persons.Include("Country").ToListAsync(); // Include with use the properti define name
+            /*var persons = await _personsRepository.Include("Country").ToListAsync(); */// Include with use the properti define name
+            var persons = await _personsRepository.GetAllPerson();
             return persons
                 .Select(temp => temp.ToPersonResponse()).ToList();
         }

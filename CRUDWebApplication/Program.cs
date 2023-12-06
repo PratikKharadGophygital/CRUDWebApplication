@@ -32,9 +32,15 @@ if (builder.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
 }
 
+app.Logger.LogDebug("LogDebug-Message");
+app.Logger.LogInformation("LogInformation-Message");
+app.Logger.LogWarning("LogWarning-Message");
+app.Logger.LogError("LogError-Message");
+app.Logger.LogCritical("LogCritical-Message");
+
 
 // Setup Rotativa Converter Html To PDF  exe file.
-if (!app.Environment.IsEnvironment("Test") == false)
+if (builder.Environment.IsEnvironment("Test") == false)
 {
     Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
 }
