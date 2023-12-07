@@ -3,6 +3,7 @@ using CsvHelper.Configuration;
 using Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
 using RepositoryContracts;
 using ServiceContracts;
@@ -21,11 +22,11 @@ namespace Services
         private readonly ApplicationDbContext _db;
         private readonly ICountriesService _countriesService;
         private readonly IPersonsRepository _personsRepository;
-
-        public PersonService(IPersonsRepository personsRepository)
+        private readonly ILogger<PersonService> _logger;
+        public PersonService(IPersonsRepository personsRepository, ILogger<PersonService> logger)
         {
             _personsRepository = personsRepository;
-
+            _logger = logger;
             //  _db = personsDbContext;
             //_countriesService = countriesService;
             #region
@@ -155,6 +156,7 @@ namespace Services
 
         public async Task<List<PersonResponse>> GetAllPersonList()
         {
+            _logger.LogInformation("GetAllPersonList in PersonService");
             /*var persons = await _personsRepository.Include("Country").ToListAsync(); */// Include with use the properti define name
             var persons = await _personsRepository.GetAllPerson();
             return persons
@@ -175,6 +177,7 @@ namespace Services
 
         public async Task<List<PersonResponse>?> GetFilteredPerson(string searchBy, string? searchString)
         {
+            _logger.LogInformation("GetPersonByPersonID of Personservice ");
             List<PersonResponse> allPersons = await GetAllPersonList();
             List<PersonResponse> matchingPersons = allPersons;
 

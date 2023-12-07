@@ -13,12 +13,14 @@ namespace CRUDWebApplication.Controllers
         // private field 
         private readonly IPersonService _personService;
         private readonly ICountriesService _countriesService;
+        private readonly ILogger<PersonsController> _logger;
 
         // constructor
-        public PersonsController(IPersonService personService, ICountriesService countriesService)
+        public PersonsController(IPersonService personService, ICountriesService countriesService, ILogger<PersonsController> logger)
         {
             _personService = personService;
             _countriesService = countriesService;
+            _logger = logger;
 
         }
 
@@ -33,6 +35,10 @@ namespace CRUDWebApplication.Controllers
 
             // when use Dictionary : when show the value of key and value paire
             // using dictionary show the drop down value
+
+            _logger.LogInformation("Index action method personcontroller");
+            _logger.LogDebug($"serachBy: {serachBy},searchString: {searchString}, sortBy:{nameof(PersonResponse.PersonName)},sortOrder:{SortOrderOptions.ASC} ");
+
             // searching
             ViewBag.SerachFields = new Dictionary<string, string>()
             {

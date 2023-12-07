@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using RepositoryContracts;
 using System.Linq.Expressions;
 
@@ -8,10 +9,12 @@ namespace Repositories
     public class PersonRepository : IPersonsRepository
     {
         private readonly ApplicationDbContext _db;
+        private readonly ILogger<PersonRepository> _logger;
 
-        public PersonRepository(ApplicationDbContext db)
+        public PersonRepository(ApplicationDbContext db, ILogger<PersonRepository> logger)
         {
             _db = db;
+            _logger = logger;
         }
 
         public async Task<Person> AddPerson(Person person)
@@ -30,6 +33,8 @@ namespace Repositories
 
         public async Task<List<Person>> GetAllPerson()
         {
+            _logger.LogInformation("GetAllPerson method of PersonRepository");
+
           return await  _db.Persons.Include("Country").ToListAsync();
         }
 
