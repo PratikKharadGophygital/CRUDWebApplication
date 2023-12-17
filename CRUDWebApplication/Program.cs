@@ -5,6 +5,8 @@ using RepositoryContracts;
 using ServiceContracts;
 using Services;
 using Serilog;
+using CRUDWebApplication.Filters.ActionFilters;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -17,16 +19,26 @@ var builder = WebApplication.CreateBuilder(args);
 //    loggingProvider.AddEventLog();
 //});
 
-//
-builder.Host.UseSerilog(HttpBuilderContext context,IServiceProvider services, LoggerConfiguration loggerConfiguration =>
+// Serilog is enable 
+builder.Host.UseSerilog((HostBuilderContext context,IServiceProvider services, LoggerConfiguration loggerConfiguration) =>
 {
     loggerConfiguration
     .ReadFrom.Configuration(context.Configuration) // Read configuration settings from built in IConfiguration
     .ReadFrom.Services(services); // Read out current apps services and make them available to serilog
 });
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+// Add services to the container. 
+// It add controller and views as services
+builder.Services.AddControllersWithViews(options =>
+{
+    //options.Filters.Add<ResponseHeaderActionFilter>();
+
+    // service provider responsible to dispach the service instances
+    // GetRequiredService : if logger is not avaliable in service then throw the exception
+    var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<ResponseHeaderActionFilter>>();
+    // using this you can pass the argument 
+    options.Filters.Add(new ResponseHeaderActionFilter(logger, "My-Key-From-Global", "My-Value-From-Global",2));
+});
 
 // add services into IOC container 
 // i want create the instace for life time if application is started 
@@ -50,6 +62,9 @@ builder.Services.AddHttpLogging(options =>
 });
 
 var app = builder.Build();
+
+// Enable endpoint completion log that means adds ab extra log message as soon as the request response is completed
+app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
 if (builder.Environment.IsDevelopment())

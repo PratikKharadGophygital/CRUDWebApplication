@@ -27,5 +27,10 @@ namespace Entities
         public string? PhoneNumber { get; set; }
         [ForeignKey("CountryID")]
         public virtual Country? Country { get; set; }
+
+        public override string ToString()
+        {
+            return $"PersonID : {PersonID}, PersonName: { PersonName},Email : {Email} ,DateOfBirth : {DateOfBirth?.ToString("dd mm yyyy")} ,Geneder:{Geneder} ,CountryName :{Country?.CountryName},Address:{Address} ,ReceivedNewsLetter :{ReceivedNewsLetter}  ";
+        }
     }
 }

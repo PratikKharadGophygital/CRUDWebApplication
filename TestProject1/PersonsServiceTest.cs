@@ -51,7 +51,7 @@ namespace TestProject1
             dbContextMock.CreateDbSetMock(temp => temp.Persons, personInitialData);
 
             _countryService = new CountriesService(null);
-            _personService = new PersonService(_personRepository);
+            _personService = new PersonService(_personRepository,null, null);
 
             _testOutputHelper = testOutputHelper;
         }
@@ -315,7 +315,7 @@ namespace TestProject1
             _personRepositoryMock.Setup(temp => temp.GetFilteredPersons(It.IsAny<Expression<Func<Person, bool>>>()))
                 .ReturnsAsync(persons);
             // Act
-            List<PersonResponse> person_responses_from_search = await _personService.GetFilteredPerson(nameof(Person.PersonName), "");
+            List<PersonResponse>? person_responses_from_search = await _personService.GetFilteredPerson(nameof(Person.PersonName), "");
 
             //foreach (PersonResponse person_responses_from_add in person_response_list_from_add)
             //{
@@ -369,7 +369,7 @@ namespace TestProject1
             _personRepositoryMock.Setup(temp => temp.GetFilteredPersons(It.IsAny<Expression<Func<Person, bool>>>()))
                 .ReturnsAsync(persons);
             // Act
-            List<PersonResponse> person_responses_from_search = await _personService.GetFilteredPerson(nameof(Person.PersonName), "sa");
+            List<PersonResponse>? person_responses_from_search = await _personService.GetFilteredPerson(nameof(Person.PersonName), "sa");
 
             //foreach (PersonResponse person_responses_from_add in person_response_list_from_add)
             //{
@@ -442,7 +442,7 @@ namespace TestProject1
 
             List<PersonResponse> allPersons = await _personService.GetAllPersonList();
 
-            List<PersonResponse> person_responses_from_sort = await _personService.GetSortedPersons(allPersons, nameof(Person.PersonName), SortOrderOptions.DESC);
+            List<PersonResponse>? person_responses_from_sort = await _personService.GetSortedPersons(allPersons, nameof(Person.PersonName), SortOrderOptions.DESC);
 
             _testOutputHelper.WriteLine("Atual :");
             foreach (PersonResponse person_responses_from_gets in person_responses_from_sort)
@@ -546,7 +546,7 @@ namespace TestProject1
             // Act
             PersonResponse person_response_from_update = await _personService.UpdatePerson(person_update_request);
 
-            PersonResponse person_response_from_get = await _personService.GetPersonByPersonID(person_response_from_update.PersonID);
+            PersonResponse? person_response_from_get = await _personService.GetPersonByPersonID(person_response_from_update.PersonID);
 
             // Assert
             Assert.Equal(person_response_from_update, person_response_from_get);

@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
 using RepositoryContracts;
+using Serilog;
+using SerilogTimings;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -23,10 +25,13 @@ namespace Services
         private readonly ICountriesService _countriesService;
         private readonly IPersonsRepository _personsRepository;
         private readonly ILogger<PersonService> _logger;
-        public PersonService(IPersonsRepository personsRepository, ILogger<PersonService> logger)
+        private readonly IDiagnosticContext _diagnosticContext;
+
+        public PersonService(IPersonsRepository personsRepository, ILogger<PersonService> logger, IDiagnosticContext diagnosticContext)
         {
             _personsRepository = personsRepository;
             _logger = logger;
+            _diagnosticContext = diagnosticContext;
             //  _db = personsDbContext;
             //_countriesService = countriesService;
             #region
@@ -186,14 +191,15 @@ namespace Services
                 return matchingPersons;
             }
 
+            using (Operation.Time("GetFilteredPerson of Person Service")) { 
             switch (searchBy)
             {
                 case nameof(PersonResponse.PersonName):
-                    matchingPersons = allPersons.Where(temp => (!string.IsNullOrEmpty(temp.PersonName)? temp.PersonName.Contains(searchString,StringComparison.OrdinalIgnoreCase) : true)).ToList();
+                    matchingPersons = allPersons.Where(temp => (!string.IsNullOrEmpty(temp.PersonName) ? temp.PersonName.Contains(searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
                     break;
 
                 case nameof(PersonResponse.Email):
-                      matchingPersons = allPersons.Where(temp => (!string.IsNullOrEmpty(temp.Email)? temp.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
+                    matchingPersons = allPersons.Where(temp => (!string.IsNullOrEmpty(temp.Email) ? temp.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase) : true)).ToList();
                     break;
 
                 case nameof(PersonResponse.DateOfBirth):
@@ -215,6 +221,8 @@ namespace Services
                 default: matchingPersons = allPersons; break;
 
             }
+        }
+            _diagnosticContext.Set("Persons", allPersons);
 
             return matchingPersons;
         }
@@ -259,7 +267,7 @@ namespace Services
 
                 (nameof(PersonResponse.ReceivedNewsLetter), SortOrderOptions.DESC) => allPersons.OrderBy(temp => temp.ReceivedNewsLetter).ToList(),
 
-                _ => allPersons
+                _ =>  allPersons
             };
 
             return sortedPersons;      
@@ -349,7 +357,7 @@ namespace Services
 
                 List<PersonResponse> persons = _db.Persons
                     .Include("Country")
-                    .Select(temp => temp.ToPersonResponse()).ToList();
+                    .Select(  temp =>  temp.ToPersonResponse()).ToList();
 
                 foreach (PersonResponse person in persons)
                 {

@@ -45,7 +45,7 @@ namespace TestProject1
             // Arrange 
             List<PersonResponse> person_response_list = _fixture.Create<List<PersonResponse>>();
 
-            PersonsController personsController = new PersonsController(_personService, _countriesService);
+            PersonsController personsController = new PersonsController(_personService, _countriesService,null);
 
             _personServiceMock
                 .Setup(temp => temp.GetFilteredPerson(It.IsAny<string>(), It.IsAny<string>()))
@@ -92,7 +92,7 @@ namespace TestProject1
             .Setup(temp => temp.AddPerson(It.IsAny<PersonAddRequest>()))
             .ReturnsAsync(person_response);
 
-            PersonsController personsController = new PersonsController(_personService, _countriesService);
+            PersonsController personsController = new PersonsController(_personService, _countriesService,null);
 
             // Act
             personsController.ModelState.AddModelError("PersonName", "Person Name Can't Be Blank");
@@ -126,7 +126,7 @@ namespace TestProject1
             .Setup(temp => temp.AddPerson(It.IsAny<PersonAddRequest>()))
             .ReturnsAsync(person_response);
 
-            PersonsController personsController = new PersonsController(_personService, _countriesService);
+            PersonsController personsController = new PersonsController(_personService, _countriesService,null);
 
             // Act
             personsController.ModelState.AddModelError("PersonName", "Person Name Can't Be Blank");
