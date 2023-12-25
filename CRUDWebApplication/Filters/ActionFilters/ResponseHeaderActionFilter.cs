@@ -73,7 +73,7 @@ namespace CRUDWebApplication.Filters.ActionFilters
             // Execution After
             _logger.LogInformation("{FilterName}.{MethodName}", nameof(ResponseHeaderActionFilter), nameof(OnActionExecutionAsync));
 
-            context.HttpContext.Response.Headers[_key] = _value;
+            context.HttpContext.Response.Headers[Key] = Value;
         }
     }
 }
