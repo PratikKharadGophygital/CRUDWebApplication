@@ -2,6 +2,7 @@
 using CRUDWebApplication.Controllers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using ServiceContracts;
 using ServiceContracts.DTO;
@@ -19,21 +20,24 @@ namespace TestProject1
     {
         private readonly  IPersonService _personService;
         private readonly ICountriesService _countriesService;
+        private readonly ILogger<PersonControllerTest> _logger;
 
         private readonly Mock<ICountriesService> _countryServiceMock;
         private readonly Mock<IPersonService> _personServiceMock;
+        private readonly Mock<ILogger<PersonControllerTest>> _loggerMock;
 
         private readonly Fixture _fixture;
 
         public PersonControllerTest()
         {
               _fixture = new Fixture();
-
+            _loggerMock = new Mock<ILogger<PersonControllerTest>>();
             _countryServiceMock = new Mock<ICountriesService>();
             _personServiceMock = new Mock<IPersonService>();
 
              _countriesService = _countryServiceMock.Object;
             _personService = _personServiceMock.Object;
+            _logger = _loggerMock.Object;
 
         }
 

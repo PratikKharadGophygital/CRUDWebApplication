@@ -7,7 +7,7 @@ namespace CRUDWebApplication.Filters.AuthorizationFilter
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if(context.HttpContext.Request.Cookies.ContainsKey("Auth-Key") == false)
+            if (context.HttpContext.Request.Cookies.ContainsKey("Auth-Key") == false)
             {
                 context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
             }

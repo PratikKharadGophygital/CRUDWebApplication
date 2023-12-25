@@ -2,7 +2,7 @@
 
 namespace CRUDWebApplication.Filters
 {
-    public class SkipFilter : Attribute,IFilterMetadata
+    public class SkipFilter : Attribute, IFilterMetadata
     {
     }
 }

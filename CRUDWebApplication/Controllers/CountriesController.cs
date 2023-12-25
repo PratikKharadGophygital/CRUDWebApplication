@@ -20,7 +20,7 @@ namespace CRUDWebApplication.Controllers
             return View();
         }
 
-        
+
         [Route("UploadFromExcel")]
         [HttpPost]
         public async Task<IActionResult> UploadFromExcel(IFormFile excelFile)
@@ -48,8 +48,8 @@ namespace CRUDWebApplication.Controllers
 
                 throw;
             }
-            
-            
+
+
 
         }
 

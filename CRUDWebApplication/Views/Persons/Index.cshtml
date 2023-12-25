@@ -3,38 +3,59 @@
 @{
     ViewBag.Title = "Persons";
 }
-
+<div class="flex">
+        <div class="flex-1">
+            <span class="text-grey" style="color: gray;
+	--darkreader-inline-color: #827c72;">Contacts</span>
+            <i class="fa-solid fa-caret-right"></i>
+            <span class="text-grey" style="color: gray;
+	--darkreader-inline-color: #827c72;">Persons</span>
+        </div>
+        <div class="flex-1">
+            <a href="~/persons/create" class="button">Create Person</a> <br />
+            <a href="~/persons/PersonPDF" class="button">Download as PDF</a> <br />
+            <a href="~/persons/PersonCSV" class="button">Download as Person CSV</a> <br />
+            <a href="~/persons/PersonsExcel" class="button">Download as Person Excel</a> <br />
+        </div>
+    </div>
 <form action="~/persons/index" method="get">
-    <h1>Persons</h1>
+    
+    
 
-    <a href="~/persons/create">Create Person</a> <br />
-    <a href="~/persons/PersonPDF">Download as PDF</a> <br />
-    <a href="~/persons/PersonCSV">Download as Person CSV</a> <br />
-    <a href="~/persons/PersonsExcel">Download as Person Excel</a> <br />
+    <div class="table-container">
+        <div class="flex">
+            <div class="flex-1">
+                <h1>Persons</h1>
+            </div>
+            <div class="flex-3">
+                <label>Search By:</label>
+                <select name="serachBy" class="search-dropdown">
+                    @foreach (var item in ViewBag.SerachFields)
+                    {
+                        if (item.Key == ViewBag.CurrentSearchBy)
+                        {
+                            <option value="@item.Key" selected="selected">@item.Value</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
 
+                    }
+                </select>
+                <input type="search" id="Search" name="searchString" value="@ViewBag.CurrentSearchString" />
+                 <button>Search</button>
+                <a href="~/persons/index">Clear all</a>
+            </div>
+        </div>
+    </div>
 
     <div>
-        <select name="serachBy">
-            @foreach (var item in ViewBag.SerachFields)
-            {
-                if (item.Key == ViewBag.CurrentSearchBy)
-                {
-                    <option value="@item.Key" selected="selected">@item.Value</option>
-                }
-                else
-                {
-                    <option value="@item.Key">@item.Value</option>
-                }
-
-            }
-        </select>
     </div>
     <div>
-        <input type="search" id="Search" class="from-input" placeholder="Search" name="searchString" value="@ViewBag.CurrentSearchString" />
+       
     </div>
     <div>
-        <button>Search</button>
-        <a href="~/persons/index">Clear all</a>
     </div>
 
 

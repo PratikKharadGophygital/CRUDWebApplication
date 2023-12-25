@@ -2,12 +2,22 @@
 @{
     ViewBag.Title = "Update Person";
 }
+ <div class="flex">
+            <div class="flex-1">
+                <span class="text-grey" style="color: gray;	--darkreader-inline-color: #827c72;">Contacts</span>
+                <i class="fa-solid fa-caret-right"></i>
+                <span class="text-grey" style="color: gray;	--darkreader-inline-color: #827c72;">Edit</span>
+            </div>
 
+        </div>
 <a href="~/persons/index"> Back To Persons List</a>
-<h1>Edit Person</h1>
+
 <div>
     @*<form asp-action="Create"  action="~/persons/Create" method="post">*@
     <form asp-controller="Persons" asp-action="Edit" method="post">
+        
+
+
         <input type="hidden" asp-for="PersonID" />
         <div>
             <div>

@@ -17,7 +17,7 @@ namespace CRUDWebApplication.Filters.ActionFilters
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             // To Do : Before
-            if (context.Controller is PersonsController personsController ) // check runtime type 
+            if (context.Controller is PersonsController personsController) // check runtime type 
             {
                 if (!personsController.ModelState.IsValid)
                 {

@@ -7,6 +7,14 @@
 <h1>Delete Person</h1>
 <h3>Are you sure to delete</h3>
 <div>
+     <div class="flex">
+            <div class="flex-1">
+                <span class="text-grey" style="color: gray;	--darkreader-inline-color: #827c72;">Contacts</span>
+                <i class="fa-solid fa-caret-right"></i>
+                <span class="text-grey" style="color: gray;	--darkreader-inline-color: #827c72;">Delete</span>
+            </div>
+
+        </div>
     @*<form asp-action="Create"  action="~/persons/Create" method="post">*@
     <form asp-controller="Persons" asp-action="Delete" method="post">
         <input type="hidden" asp-for="PersonID" />

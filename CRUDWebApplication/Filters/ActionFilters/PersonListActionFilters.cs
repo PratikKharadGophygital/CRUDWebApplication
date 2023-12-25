@@ -17,7 +17,7 @@ namespace CRUDWebApplication.Filters.ActionFilters
         public void OnActionExecuted(ActionExecutedContext context)
         {
             // To do : add after logic here 
-            _logger.LogInformation("{FileName}.{MethodName} Method",nameof(PersonListActionFilters),nameof(OnActionExecuted));
+            _logger.LogInformation("{FileName}.{MethodName} Method", nameof(PersonListActionFilters), nameof(OnActionExecuted));
             //throw new NotImplementedException();
 
             IDictionary<string, object?>? parameters = (IDictionary<string, object?>?)context.HttpContext.Items["arguments"];
@@ -26,25 +26,29 @@ namespace CRUDWebApplication.Filters.ActionFilters
             {
                 if (parameters.ContainsKey("serachBy"))
                 {
-                   
+
                     personController.ViewData["CurrentSerachBy"] = Convert.ToString(parameters["serachBy"]);
                 }
 
                 if (parameters.ContainsKey("searchString"))
                 {
-                    
+
                     personController.ViewData["CurrentSearchString"] = Convert.ToString(parameters["searchString"]);
                 }
 
                 if (parameters.ContainsKey("sortBy"))
                 {
-                    
+
                     personController.ViewData["CurrentSortBy"] = Convert.ToString(parameters["sortBy"]);
+                }
+                else
+                {
+                    personController.ViewData["CurrentSortBy"] = nameof(PersonResponse.PersonName);
                 }
 
                 if (parameters.ContainsKey("sortOrder"))
                 {
-                    
+
                     personController.ViewData["CurrentSortBy"] = Convert.ToString(parameters["sortOrder"]);
                 }
 
@@ -59,16 +63,16 @@ namespace CRUDWebApplication.Filters.ActionFilters
                 {nameof(PersonResponse.Address), "Address" },
             };
             }
-           
+
         }
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
             // To do : add before logic here
-           
+
             _logger.LogInformation("{FileName}.{MethodName} Method", nameof(PersonListActionFilters), nameof(OnActionExecuting));
 
-            context.HttpContext.Items["arguments"]= context.ActionArguments;
+            context.HttpContext.Items["arguments"] = context.ActionArguments;
             // Validate the searchBy parameter value 
             if (context.ActionArguments.ContainsKey("serachBy"))
             {
@@ -84,11 +88,11 @@ namespace CRUDWebApplication.Filters.ActionFilters
                         nameof(PersonResponse.Geneder),
                         nameof(PersonResponse.CountryID),
                         nameof(PersonResponse.Address),
-                        
+
                     };
 
                     // Reset the searchBy parameter value 
-                    if(serachByOptions.Any(temp => temp == serachBy) == false)
+                    if (serachByOptions.Any(temp => temp == serachBy) == false)
                     {
                         _logger.LogInformation("searchBy actual value {searchBy}", serachBy);
                         context.ActionArguments["serachBy"] = nameof(PersonResponse.PersonName);

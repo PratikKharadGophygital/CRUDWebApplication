@@ -8,7 +8,7 @@ namespace CRUDWebApplication.Filters.ResourceFilters
         private readonly ILogger<FeatureDisabledResourceFilter> _logger;
         private readonly bool _isDisable;
 
-        public FeatureDisabledResourceFilter(ILogger<FeatureDisabledResourceFilter> logger,bool isDisable = true)
+        public FeatureDisabledResourceFilter(ILogger<FeatureDisabledResourceFilter> logger, bool isDisable = true)
         {
             _logger = logger;
             _isDisable = isDisable;
@@ -29,7 +29,7 @@ namespace CRUDWebApplication.Filters.ResourceFilters
                 await next();
             }
 
-            
+
 
             // After
             _logger.LogInformation("{FilterName}.{MethodName} Method", nameof(FeatureDisabledResourceFilter), nameof(OnResourceExecutionAsync));

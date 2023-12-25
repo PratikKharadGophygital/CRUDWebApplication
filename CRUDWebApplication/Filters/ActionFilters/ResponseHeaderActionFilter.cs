@@ -11,7 +11,7 @@ namespace CRUDWebApplication.Filters.ActionFilters
         private string? Value { get; set; }
         private int Order { get; set; }
 
-        public ResponseHeaderFilterFactoryAttribute(string key,string value,int order)
+        public ResponseHeaderFilterFactoryAttribute(string key, string value, int order)
         {
             Key = key;
             Value = value;
@@ -21,7 +21,7 @@ namespace CRUDWebApplication.Filters.ActionFilters
         // Controller -> FilterFactory -> Filter 
         public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
         {
-           var filter = serviceProvider.GetRequiredService<ResponseHeaderActionFilter>();
+            var filter = serviceProvider.GetRequiredService<ResponseHeaderActionFilter>();
             filter.Key = Key;
             filter.Value = Value;
             filter.Order = Order;
@@ -30,7 +30,7 @@ namespace CRUDWebApplication.Filters.ActionFilters
     }
 
 
-    public class ResponseHeaderActionFilter : IAsyncActionFilter,IOrderedFilter
+    public class ResponseHeaderActionFilter : IAsyncActionFilter, IOrderedFilter
     {
 
         private readonly ILogger<ResponseHeaderActionFilter> _logger;
@@ -45,7 +45,7 @@ namespace CRUDWebApplication.Filters.ActionFilters
         public ResponseHeaderActionFilter(ILogger<ResponseHeaderActionFilter> logger)
         {
             _logger = logger;
-  
+
         }
 
         // before 
@@ -57,9 +57,9 @@ namespace CRUDWebApplication.Filters.ActionFilters
         // after
         //public void OnActionExecuted(ActionExecutedContext context)
         //{
-            
 
-            
+
+
         //}
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)

@@ -15,7 +15,7 @@ namespace CRUDWebApplication.Controllers
 {
     [Route("persons")]
     // Handle exception for controller level for filters only model binding both action method and filter 
-    [TypeFilter(typeof(HandleExceptionFilter))]
+   // [TypeFilter(typeof(HandleExceptionFilter))]
     // This filter applied for the all action method for this controller.
     //[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Controller", "My-Value-From-Controller", 3 }, Order = 3)]
     // East way to access the ResponseHeaderActionFilter class using IFilterFactory 
@@ -86,7 +86,7 @@ namespace CRUDWebApplication.Controllers
         #region create
         [Route("create")]
         [HttpGet]
-        [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Action", "My-Value-From-Action", 4 })]
+        //[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Action", "My-Value-From-Action", 4 })]
         public async Task<IActionResult> Create()
         {
             List<CountryResponse> countries = await _countriesService.GetAllCountryList();
@@ -99,10 +99,10 @@ namespace CRUDWebApplication.Controllers
         [HttpPost]
         [Route("Create")]
         [TypeFilter(typeof(PersonCreateAndEditPostActionFilter))]
-        [TypeFilter(typeof(FeatureDisabledResourceFilter), Arguments = new object[]{false})]
+        [TypeFilter(typeof(FeatureDisabledResourceFilter), Arguments = new object[] { false })]
         public async Task<IActionResult> Create(PersonAddRequest personRequest)
         {
-           
+
             PersonResponse personResponse = await _personService.AddPerson(personRequest);
 
             // navigate to index() action method it (it makes another get request to "persons/index")
@@ -183,7 +183,7 @@ namespace CRUDWebApplication.Controllers
                 return RedirectToAction("Index");
             }
 
-           await _personService.DeletePerson(personUpdateRequest.PersonID);
+            await _personService.DeletePerson(personUpdateRequest.PersonID);
             return RedirectToAction("Index");
         }
 
@@ -195,7 +195,8 @@ namespace CRUDWebApplication.Controllers
             //return view as pdf file using rotativa package inbuild method
             return new ViewAsPdf("PersonPDF", persons, ViewData)
             {
-                PageMargins = new Rotativa.AspNetCore.Options.Margins() { Top =20,Right=20,Bottom=20,Left=20},PageOrientation= Rotativa.AspNetCore.Options.Orientation.Landscape
+                PageMargins = new Rotativa.AspNetCore.Options.Margins() { Top = 20, Right = 20, Bottom = 20, Left = 20 },
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape
 
             };
         }

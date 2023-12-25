@@ -1,11 +1,12 @@
+using CRUDWebApplication.Filters.ActionFilters;
+using CRUDWebApplication.StartupExtensions;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using RepositoryContracts;
+using Serilog;
 using ServiceContracts;
 using Services;
-using Serilog;
-using CRUDWebApplication.Filters.ActionFilters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,49 +21,16 @@ var builder = WebApplication.CreateBuilder(args);
 //});
 
 // Serilog is enable 
-builder.Host.UseSerilog((HostBuilderContext context,IServiceProvider services, LoggerConfiguration loggerConfiguration) =>
+builder.Host.UseSerilog((HostBuilderContext context, IServiceProvider services, LoggerConfiguration loggerConfiguration) =>
 {
     loggerConfiguration
     .ReadFrom.Configuration(context.Configuration) // Read configuration settings from built in IConfiguration
     .ReadFrom.Services(services); // Read out current apps services and make them available to serilog
 });
 
-// Add services to the container. 
-// It add controller and views as services
-builder.Services.AddControllersWithViews(options =>
-{
-    //options.Filters.Add<ResponseHeaderActionFilter>();
-
-    // service provider responsible to dispach the service instances
-    // GetRequiredService : if logger is not avaliable in service then throw the exception
-    var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<ResponseHeaderActionFilter>>();
-    // using this you can pass the argument 
-    options.Filters.Add(new ResponseHeaderActionFilter( "My-Key-From-Global", "My-Value-From-Global",2));
-});
-
-// add services into IOC container 
-// i want create the instace for life time if application is started 
-builder.Services.AddScoped<ICountriesService, CountriesService>();
-builder.Services.AddScoped<IContriesRepository, CountriesRepository>();
-
-builder.Services.AddScoped<IPersonService, PersonService>();
-builder.Services.AddScoped<IPersonsRepository, PersonRepository>();
-
-builder.Services.AddTransient<PersonListActionFilters>();
-
-// EF core connection with sql server by default is services as scoped services 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-
-
-builder.Services.AddHttpLogging(options =>
-{
-    options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties |
-    Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponsePropertiesAndHeaders;
-
-});
+// Using Extension Method for services 
+// Using parameter send the value of builder.Configuration for extension method because extension method does not access the builder services that the reason we are pass the value of the parameter 
+builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -70,10 +38,18 @@ var app = builder.Build();
 app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline. 
-// This condition working for the production 
-if (!builder.Environment.IsDevelopment())
+// When env is development then show the exception page.
+if (builder.Environment.IsDevelopment())
+{
+    //app.UseExceptionHandler("/Home/Error");
+    app.UseDeveloperExceptionPage();
+}
+
+// Only for when app is production stage 
+if (builder.Environment.IsProduction())
 {
     app.UseExceptionHandler("/Home/Error");
+
 }
 
 // Enable the Http rquest Logging Track every rquest log.
