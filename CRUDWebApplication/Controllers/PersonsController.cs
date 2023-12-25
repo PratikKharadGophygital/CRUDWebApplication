@@ -1,4 +1,7 @@
-﻿using CRUDWebApplication.Filters.ActionFilters;
+﻿using CRUDWebApplication.Filters;
+using CRUDWebApplication.Filters.ActionFilters;
+using CRUDWebApplication.Filters.AuthorizationFilter;
+using CRUDWebApplication.Filters.ExceptionFilters;
 using CRUDWebApplication.Filters.ResourceFilters;
 using CRUDWebApplication.Filters.ResultFilters;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +14,13 @@ using ServiceContracts.Enums;
 namespace CRUDWebApplication.Controllers
 {
     [Route("persons")]
+    // Handle exception for controller level for filters only model binding both action method and filter 
+    [TypeFilter(typeof(HandleExceptionFilter))]
     // This filter applied for the all action method for this controller.
-    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Controller", "My-Value-From-Controller", 3 }, Order = 3)]
+    //[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Controller", "My-Value-From-Controller", 3 }, Order = 3)]
+    // East way to access the ResponseHeaderActionFilter class using IFilterFactory 
+    [ResponseHeaderFilterFactoryAttribute("My-Key-From-Controller", "My-Value-From-Controller", 3)]
+    [TypeFilter(typeof(PersonAlwaysRunResultFilter))]
     public class PersonsController : Controller
     {
         // private field 
@@ -32,9 +40,11 @@ namespace CRUDWebApplication.Controllers
 
         [Route("index")]
         [Route("/")]
-        [TypeFilter(typeof(PersonListActionFilters), Order = 4)]
-        [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Action", "My-Value-From-Action", 1 }, Order = 1)]
+        [ServiceFilter(typeof(PersonListActionFilters), Order = 4)]
+        //[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Action", "My-Value-From-Action", 1 }, Order = 1)]
+        [ResponseHeaderFilterFactoryAttribute("My-Key-From-Action", "My-Value-From-Action", 1)]
         [TypeFilter(typeof(PersonListResultFilter))]
+        [SkipFilter]
         public async Task<IActionResult> Index(string serachBy, string? searchString, string sortBy = nameof(PersonResponse.PersonName), SortOrderOptions sortOrder = SortOrderOptions.ASC)
         {
             //if user not select any value then arugment set the default value.
@@ -101,8 +111,9 @@ namespace CRUDWebApplication.Controllers
         #endregion
 
         #region Edit
-        [Route("[action]/{personID}")]
         [HttpGet]
+        [Route("[action]/{personID}")]
+        [TypeFilter(typeof(TokenResultFilter))]
         public async Task<IActionResult> Edit(Guid personID)
         {
             PersonResponse? personResponse = await _personService.GetPersonByPersonID(personID);
@@ -127,6 +138,7 @@ namespace CRUDWebApplication.Controllers
         [HttpPost]
         [Route("[action]/{personID}")]
         [TypeFilter(typeof(PersonCreateAndEditPostActionFilter))]
+        [TypeFilter(typeof(TokenAuthorizationFilter))]
         public async Task<IActionResult> Edit(PersonUpdateRequest personRequest)
         {
             PersonResponse? personResponse = await _personService.GetPersonByPersonID(personRequest.PersonID);

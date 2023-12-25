@@ -71,12 +71,15 @@ namespace ServiceContracts.DTO
             return new PersonUpdateRequest()
             {
                 PersonID = PersonID,
+                PersonName = PersonName,
                 Email = Email,
                 DateOfBirth = DateOfBirth,
                 Geneder = (GenderOptions)Enum.Parse(typeof(GenderOptions), Geneder, true),
                 CountryID = CountryID,
+                CountryName = CountryName,
                 Address = Address,
-                ReceivedNewsLetter = ReceivedNewsLetter
+                ReceivedNewsLetter = ReceivedNewsLetter,
+                Age = Age
             };
 
         }

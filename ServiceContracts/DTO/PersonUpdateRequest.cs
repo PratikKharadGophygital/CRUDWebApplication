@@ -24,6 +24,8 @@ namespace ServiceContracts.DTO
 
         public string? Address { get; set; }
         public bool ReceivedNewsLetter { get; set; }
+        public double? Age { get; set; }
+        public string? CountryName { get; set; }
 
         /// <summary>
         /// ToConvert Convert the current object data into a new object of person 

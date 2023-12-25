@@ -172,7 +172,7 @@ namespace Services
         {
             if (personID == null) return null;
 
-            Person? person = await _db.Persons.FirstOrDefaultAsync(temp => temp.PersonID == personID);
+            Person? person = await _personsRepository.GetPersonByPersonID(personID);
 
             if (person == null) return null;
 

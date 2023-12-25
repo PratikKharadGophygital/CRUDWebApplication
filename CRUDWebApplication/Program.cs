@@ -37,7 +37,7 @@ builder.Services.AddControllersWithViews(options =>
     // GetRequiredService : if logger is not avaliable in service then throw the exception
     var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<ResponseHeaderActionFilter>>();
     // using this you can pass the argument 
-    options.Filters.Add(new ResponseHeaderActionFilter(logger, "My-Key-From-Global", "My-Value-From-Global",2));
+    options.Filters.Add(new ResponseHeaderActionFilter( "My-Key-From-Global", "My-Value-From-Global",2));
 });
 
 // add services into IOC container 
@@ -48,11 +48,14 @@ builder.Services.AddScoped<IContriesRepository, CountriesRepository>();
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IPersonsRepository, PersonRepository>();
 
+builder.Services.AddTransient<PersonListActionFilters>();
+
 // EF core connection with sql server by default is services as scoped services 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
 
 builder.Services.AddHttpLogging(options =>
 {
@@ -66,8 +69,9 @@ var app = builder.Build();
 // Enable endpoint completion log that means adds ab extra log message as soon as the request response is completed
 app.UseSerilogRequestLogging();
 
-// Configure the HTTP request pipeline.
-if (builder.Environment.IsDevelopment())
+// Configure the HTTP request pipeline. 
+// This condition working for the production 
+if (!builder.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
