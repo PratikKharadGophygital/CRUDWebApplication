@@ -12,6 +12,18 @@ namespace CRUDWebApplication.StartupExtensions
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services,IConfiguration configuration)
         {
+            // EF core connection with sql server by default is services as scoped services 
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            services.AddHttpLogging(options =>
+            {
+                options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties |
+                Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponsePropertiesAndHeaders;
+
+            });
 
             // Add services to the container. 
             // It add controller and views as services
@@ -43,19 +55,15 @@ namespace CRUDWebApplication.StartupExtensions
 
             services.AddTransient<PersonListActionFilters>();
 
-            // EF core connection with sql server by default is services as scoped services 
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            });
+            services.AddScoped<IPersonAdderService, PersonAdderService>();
+            services.AddScoped<IPersonUpdaterService, PersonUpdaterService>();
+            services.AddScoped<IPersonDeleterService, PersonDeleterService>();
+            services.AddScoped<IPersonGetterService, PersonGetterService>();
+            services.AddScoped<IPersonSorterService, PersonSorterService>();
 
 
-            services.AddHttpLogging(options =>
-            {
-                options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties |
-                Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponsePropertiesAndHeaders;
 
-            });
+
 
             return services;
 
