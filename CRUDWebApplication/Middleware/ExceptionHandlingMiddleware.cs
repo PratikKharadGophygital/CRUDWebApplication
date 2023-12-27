@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Serilog;
 using System.Threading.Tasks;
 
 namespace CRUDWebApplication.Middleware
@@ -8,16 +9,43 @@ namespace CRUDWebApplication.Middleware
     public class ExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+        private readonly IDiagnosticContext _diagnosticContext; 
 
-        public ExceptionHandlingMiddleware(RequestDelegate next)
+        public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger, IDiagnosticContext diagnosticContext)
         {
             _next = next;
+            _logger = logger;
+            _diagnosticContext = diagnosticContext;
         }
 
-        public Task Invoke(HttpContext httpContext)
+        public async Task Invoke(HttpContext httpContext)
         {
+            try
+            {
+                // It call the next middle which one is executed.
+               await _next(httpContext);
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError("{ExceptionType},{ExceptionMessage}",ex.InnerException.GetType().ToString(),ex.InnerException.Message);
+                }
+                else
+                {
+                    _logger.LogError("{ExceptionType},{ExceptionMessage}", ex.GetType().ToString(), ex.Message);
+                }
 
-            return _next(httpContext);
+                //  Custom exception error message 
+                //httpContext.Response.StatusCode = 500;
+                //httpContext.Response.WriteAsync("Internal Server Error Occurred. Please Contact Admin");
+
+                // This statement called the build in exception handle middlerware 
+                // Same exception object is rethrown from here 
+                throw;
+            }
+           
         }
     }
 

@@ -18,12 +18,20 @@ namespace TestProject1
 {
     public class PersonControllerTest
     {
-        private readonly  IPersonService _personService;
+        //private readonly  IPersonService_ _personService;
+
+        // S.O.L.I.D | I principle use here
+        private readonly IPersonAdderService _personAdderService;
+        private readonly IPersonUpdaterService _personUpdaterService;
+        private readonly IPersonDeleterService _personDeleterService;
+        private readonly IPersonGetterService _personGetterService;
+        private readonly IPersonSorterService _personSorterService;
+
         private readonly ICountriesService _countriesService;
         private readonly ILogger<PersonControllerTest> _logger;
 
         private readonly Mock<ICountriesService> _countryServiceMock;
-        private readonly Mock<IPersonService> _personServiceMock;
+        private readonly Mock<IPersonService_> _personServiceMock;
         private readonly Mock<ILogger<PersonControllerTest>> _loggerMock;
 
         private readonly Fixture _fixture;
@@ -33,7 +41,7 @@ namespace TestProject1
               _fixture = new Fixture();
             _loggerMock = new Mock<ILogger<PersonControllerTest>>();
             _countryServiceMock = new Mock<ICountriesService>();
-            _personServiceMock = new Mock<IPersonService>();
+            _personServiceMock = new Mock<IPersonService_>();
 
              _countriesService = _countryServiceMock.Object;
             _personService = _personServiceMock.Object;

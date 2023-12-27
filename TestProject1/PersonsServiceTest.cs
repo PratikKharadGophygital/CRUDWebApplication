@@ -3,6 +3,7 @@ using Entities;
 using EntityFrameworkCoreMock;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using RepositoryContracts;
 using ServiceContracts;
@@ -22,7 +23,15 @@ namespace TestProject1
 {
     public class PersonsServiceTest
     {
-        private readonly IPersonService _personService;
+        //private readonly IPersonService_ _personService;
+
+        // S.O.L.I.D | I principle use here
+        private readonly IPersonAdderService _personAdderService;
+        private readonly IPersonUpdaterService _personUpdaterService;
+        private readonly IPersonDeleterService _personDeleterService;
+        private readonly IPersonGetterService _personGetterService;
+        private readonly IPersonSorterService _personSorterService;
+
         private readonly ICountriesService _countryService;
         private readonly ITestOutputHelper _testOutputHelper;
         private readonly IFixture _fixture;
@@ -40,6 +49,7 @@ namespace TestProject1
             _fixture = new Fixture();
             var countriesInitialData = new List<Country>() { };
             var personInitialData = new List<Person>() { };
+            var loggerMock = new Mock<ILogger<PersonGetterService>>();
 
             DbContextMock<ApplicationDbContext> dbContextMock = new(
                 new DbContextOptionsBuilder<ApplicationDbContext>().Options);
@@ -51,7 +61,7 @@ namespace TestProject1
             dbContextMock.CreateDbSetMock(temp => temp.Persons, personInitialData);
 
             _countryService = new CountriesService(null);
-            _personService = new PersonService(_personRepository,null, null);
+            _personGetterService = new PersonGetterService(_personRepository, loggerMock, null);
 
             _testOutputHelper = testOutputHelper;
         }

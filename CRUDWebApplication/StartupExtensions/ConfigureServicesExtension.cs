@@ -38,7 +38,7 @@ namespace CRUDWebApplication.StartupExtensions
             services.AddScoped<ICountriesService, CountriesService>();
             services.AddScoped<IContriesRepository, CountriesRepository>();
 
-            services.AddScoped<IPersonService, PersonService>();
+            services.AddScoped<IPersonService_, PersonService_>();
             services.AddScoped<IPersonsRepository, PersonRepository>();
 
             services.AddTransient<PersonListActionFilters>();

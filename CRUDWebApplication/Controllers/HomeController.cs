@@ -1,9 +1,11 @@
 ﻿using CRUDWebApplication.Models;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace CRUDWebApplication.Controllers
 {
+    [Route("home")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -23,10 +25,17 @@ namespace CRUDWebApplication.Controllers
             return View();
         }
 
+        [Route("error")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            IExceptionHandlerPathFeature ? exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+
+            if(exceptionHandlerPathFeature != null && exceptionHandlerPathFeature.Error != null)
+            {
+                ViewBag.ErrorMessage = exceptionHandlerPathFeature.Error.Message;
+            } 
+            return View();
         }
     }
 }

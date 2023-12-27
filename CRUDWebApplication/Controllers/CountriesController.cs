@@ -7,8 +7,8 @@ namespace CRUDWebApplication.Controllers
     public class CountriesController : Controller
     {
 
-        private readonly IPersonService _personService;
-        public CountriesController(IPersonService personService)
+        private readonly IPersonService_ _personService;
+        public CountriesController(IPersonService_ personService)
         {
             _personService = personService;
         }

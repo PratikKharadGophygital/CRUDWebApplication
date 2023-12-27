@@ -20,3 +20,5 @@
 /.vs/CRUDWebApplication
 /.vs/ProjectEvaluation
 /CRUDWebApplication/logs
+/Exceptions/bin/Debug/net6.0
+/Exceptions/obj

@@ -1,4 +1,5 @@
 using CRUDWebApplication.Filters.ActionFilters;
+using CRUDWebApplication.Middleware;
 using CRUDWebApplication.StartupExtensions;
 using Entities;
 using Microsoft.EntityFrameworkCore;
@@ -34,8 +35,6 @@ builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
 
-// Enable endpoint completion log that means adds ab extra log message as soon as the request response is completed
-app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline. 
 // When env is development then show the exception page.
@@ -44,13 +43,21 @@ if (builder.Environment.IsDevelopment())
     //app.UseExceptionHandler("/Home/Error");
     app.UseDeveloperExceptionPage();
 }
-
-// Only for when app is production stage 
-if (builder.Environment.IsProduction())
+else
 {
-    app.UseExceptionHandler("/Home/Error");
-
+    app.UseExceptionHandler("/home/error");
+    // Only for when app is production stage 
+    app.UseExceptionHandlingMiddleware();
 }
+
+// Enable endpoint completion log that means adds ab extra log message as soon as the request response is completed
+app.UseSerilogRequestLogging();
+
+//if (builder.Environment.IsProduction())
+//{
+//    app.UseExceptionHandler("/Home/Error");
+
+//}
 
 // Enable the Http rquest Logging Track every rquest log.
 app.UseHttpLogging();

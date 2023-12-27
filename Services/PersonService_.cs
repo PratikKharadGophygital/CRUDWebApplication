@@ -1,6 +1,7 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using Entities;
+using Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -18,16 +19,16 @@ using System.Linq;
 
 namespace Services
 {
-    public class PersonService : IPersonService
+    public class PersonService_ : IPersonService_
     {
         // Private field
         private readonly ApplicationDbContext _db;
         private readonly ICountriesService _countriesService;
         private readonly IPersonsRepository _personsRepository;
-        private readonly ILogger<PersonService> _logger;
+        private readonly ILogger<PersonService_> _logger;
         private readonly IDiagnosticContext _diagnosticContext;
 
-        public PersonService(IPersonsRepository personsRepository, ILogger<PersonService> logger, IDiagnosticContext diagnosticContext)
+        public PersonService_(IPersonsRepository personsRepository, ILogger<PersonService_> logger, IDiagnosticContext diagnosticContext)
         {
             _personsRepository = personsRepository;
             _logger = logger;
@@ -289,7 +290,7 @@ namespace Services
 
             if (matchingPerson == null)
             {
-                throw new ArgumentException("Given person id doesn't exist");
+                throw new InvalidPersonIDException("Given person id doesn't exist");
             }
 
             // update all details 
