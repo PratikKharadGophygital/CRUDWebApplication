@@ -18,14 +18,9 @@ namespace TestProject1
 {
     public class PersonControllerTest
     {
-        //private readonly  IPersonService_ _personService;
+        private readonly  IPersonService_ _personService;
 
-        // S.O.L.I.D | I principle use here
-        private readonly IPersonAdderService _personAdderService;
-        private readonly IPersonUpdaterService _personUpdaterService;
-        private readonly IPersonDeleterService _personDeleterService;
-        private readonly IPersonGetterService _personGetterService;
-        private readonly IPersonSorterService _personSorterService;
+        
 
         private readonly ICountriesService _countriesService;
         private readonly ILogger<PersonControllerTest> _logger;

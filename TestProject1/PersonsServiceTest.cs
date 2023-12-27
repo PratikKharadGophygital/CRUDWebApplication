@@ -61,7 +61,7 @@ namespace TestProject1
             dbContextMock.CreateDbSetMock(temp => temp.Persons, personInitialData);
 
             _countryService = new CountriesService(null);
-            _personGetterService = new PersonGetterService(_personRepository, loggerMock, null);
+            _personGetterService = new PersonGetterService(_personRepository, loggerMock.Object, null);
 
             _testOutputHelper = testOutputHelper;
         }
