@@ -4,23 +4,23 @@
     ViewBag.Title = "Persons";
 }
 <div class="flex">
-        <div class="flex-1">
-            <span class="text-grey" style="color: gray;
+    <div class="flex-1">
+        <span class="text-grey" style="color: gray;
 	--darkreader-inline-color: #827c72;">Contacts</span>
-            <i class="fa-solid fa-caret-right"></i>
-            <span class="text-grey" style="color: gray;
+        <i class="fa-solid fa-caret-right"></i>
+        <span class="text-grey" style="color: gray;
 	--darkreader-inline-color: #827c72;">Persons</span>
-        </div>
-        <div class="flex-1">
-            <a href="~/persons/create" class="button">Create Person</a> <br />
-            <a href="~/persons/PersonPDF" class="button">Download as PDF</a> <br />
-            <a href="~/persons/PersonCSV" class="button">Download as Person CSV</a> <br />
-            <a href="~/persons/PersonsExcel" class="button">Download as Person Excel</a> <br />
-        </div>
     </div>
+    <div class="flex-1">
+        <a href="~/persons/create" class="button">Create Person</a> <br />
+        <a href="~/persons/PersonPDF" class="button">Download as PDF</a> <br />
+        <a href="~/persons/PersonCSV" class="button">Download as Person CSV</a> <br />
+        <a href="~/persons/PersonsExcel" class="button">Download as Person Excel</a> <br />
+    </div>
+</div>
 <form action="~/persons/index" method="get">
-    
-    
+
+
 
     <div class="table-container">
         <div class="flex">
@@ -44,7 +44,7 @@
                     }
                 </select>
                 <input type="search" id="Search" name="searchString" value="@ViewBag.CurrentSearchString" />
-                 <button>Search</button>
+                <button>Search</button>
                 <a href="~/persons/index">Clear all</a>
             </div>
         </div>
@@ -53,99 +53,120 @@
     <div>
     </div>
     <div>
-       
     </div>
     <div>
     </div>
 
-
-    <table class="persons">
-        <thead>
-            <tr>
-
-                @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
-                {"ColumnName", nameof(PersonResponse.PersonName)},
-                {"DisplayName", "Person Name"},
-
-                })
-
-                @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
-                {"ColumnName", nameof(PersonResponse.Email)},
-                {"DisplayName", "Email"},
-
-                })
-
-                @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
-                {"ColumnName", nameof(PersonResponse.DateOfBirth)},
-                {"DisplayName", "DateOfBirth"},
-
-                })
-
-                @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
-                {"ColumnName", nameof(PersonResponse.Age)},
-                {"DisplayName", "Age"},
-
-                })
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <!-- /.card -->
 
 
-                @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
-                {"ColumnName", nameof(PersonResponse.Geneder)},
-                {"DisplayName", "Geneder"},
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">DataTable with default features</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table class="persons table table-bordered table-striped">
+                                <thead>
+                                    <tr>
 
-                })
+                                        @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
+                                        {"ColumnName", nameof(PersonResponse.PersonName)},
+                                        {"DisplayName", "Person Name"},
 
-                @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
-                {"ColumnName", nameof(PersonResponse.CountryName)},
-                {"DisplayName", "CountryName"},
+                                        })
 
-                })
+                                        @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
+                                        {"ColumnName", nameof(PersonResponse.Email)},
+                                        {"DisplayName", "Email"},
 
-                @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
-                {"ColumnName", nameof(PersonResponse.Address)},
-                {"DisplayName", "Address"},
+                                        })
 
-                })
+                                        @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
+                                        {"ColumnName", nameof(PersonResponse.DateOfBirth)},
+                                        {"DisplayName", "DateOfBirth"},
 
-                @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
-                {"ColumnName", nameof(PersonResponse.ReceivedNewsLetter)},
-                {"DisplayName", "ReceivedNewsLetter"},
+                                        })
 
-                })
+                                        @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
+                                        {"ColumnName", nameof(PersonResponse.Age)},
+                                        {"DisplayName", "Age"},
+
+                                        })
+
+
+                                        @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
+                                        {"ColumnName", nameof(PersonResponse.Geneder)},
+                                        {"DisplayName", "Geneder"},
+
+                                        })
+
+                                        @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
+                                        {"ColumnName", nameof(PersonResponse.CountryName)},
+                                        {"DisplayName", "CountryName"},
+
+                                        })
+
+                                        @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
+                                        {"ColumnName", nameof(PersonResponse.Address)},
+                                        {"DisplayName", "Address"},
+
+                                        })
+
+                                        @await Html.PartialAsync("_GridColumnHeader",new ViewDataDictionary(ViewData){
+                                        {"ColumnName", nameof(PersonResponse.ReceivedNewsLetter)},
+                                        {"DisplayName", "ReceivedNewsLetter"},
+
+                                        })
 
 
 
 
 
-                @*  <th>Email</th>
-                    <th>Date of Birth</th>
-                    <th>Age</th>
-                    <th>Geneder</th>
-                    <th>Country</th>
-                    <th>Address</th>
-                    <th>Receive News Letters</th>*@
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (PersonResponse person in Model)
-            {
-                <tr>
-                    <td>@person.PersonName</td>
-                    <td>@person.Email</td>
-                    <td>@person.DateOfBirth?.ToString("dd MMM yyyy")</td>
-                    <td>@person.Age</td>
-                    <td>@person.Geneder</td>
-                    <td>@person.CountryName</td>
-                    <td>@person.Address</td>
-                    <td>@person.ReceivedNewsLetter</td>
-                    <td>
-                        @* asp-route-personID using this parameter send the personid for method  *@
-                        <a asp-controller="Persons" asp-action="Edit" asp-route-personID="@person.PersonID">Edit</a>
-                        <a asp-controller="Persons" asp-action="Delete" asp-route-personID="@person.PersonID">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
+                                        @*  <th>Email</th>
+                                        <th>Date of Birth</th>
+                                        <th>Age</th>
+                                        <th>Geneder</th>
+                                        <th>Country</th>
+                                        <th>Address</th>
+                                        <th>Receive News Letters</th>*@
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (PersonResponse person in Model)
+                                    {
+                                        <tr>
+                                            <td>@person.PersonName</td>
+                                            <td>@person.Email</td>
+                                            <td>@person.DateOfBirth?.ToString("dd MMM yyyy")</td>
+                                            <td>@person.Age</td>
+                                            <td>@person.Geneder</td>
+                                            <td>@person.CountryName</td>
+                                            <td>@person.Address</td>
+                                            <td>@person.ReceivedNewsLetter</td>
+                                            <td>
+                                                @* asp-route-personID using this parameter send the personid for method  *@
+                                                <a asp-controller="Persons" asp-action="Edit" asp-route-personID="@person.PersonID">Edit</a>
+                                                <a asp-controller="Persons" asp-action="Delete" asp-route-personID="@person.PersonID">Delete</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
 
-    </table>
-
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
 </form>
