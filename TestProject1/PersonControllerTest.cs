@@ -7,6 +7,7 @@ using Moq;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
+using Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,12 @@ namespace TestProject1
 
         private readonly ICountriesService _countriesService;
         private readonly ILogger<PersonControllerTest> _logger;
+
+        private readonly IPersonAdderService _personAdderService;
+        private readonly IPersonUpdaterService _personUpdaterService;
+        private readonly IPersonDeleterService _personDeleterService;
+        private readonly IPersonGetterService _personGetterService;
+        private readonly IPersonSorterService _personSorterService;
 
         private readonly Mock<ICountriesService> _countryServiceMock;
         private readonly Mock<IPersonService_> _personServiceMock;
@@ -52,7 +59,7 @@ namespace TestProject1
             // Arrange 
             List<PersonResponse> person_response_list = _fixture.Create<List<PersonResponse>>();
 
-            PersonsController personsController = new PersonsController(_personService, _countriesService,null);
+            PersonsController personsController = new PersonsController(_personAdderService, _personUpdaterService, _personDeleterService, _personGetterService, _personSorterService, _countriesService,null);
 
             _personServiceMock
                 .Setup(temp => temp.GetFilteredPerson(It.IsAny<string>(), It.IsAny<string>()))
@@ -99,7 +106,7 @@ namespace TestProject1
             .Setup(temp => temp.AddPerson(It.IsAny<PersonAddRequest>()))
             .ReturnsAsync(person_response);
 
-            PersonsController personsController = new PersonsController(_personService, _countriesService,null);
+            PersonsController personsController = new PersonsController(_personAdderService, _personUpdaterService, _personDeleterService, _personGetterService, _personSorterService, _countriesService,null);
 
             // Act
             personsController.ModelState.AddModelError("PersonName", "Person Name Can't Be Blank");
@@ -133,7 +140,7 @@ namespace TestProject1
             .Setup(temp => temp.AddPerson(It.IsAny<PersonAddRequest>()))
             .ReturnsAsync(person_response);
 
-            PersonsController personsController = new PersonsController(_personService, _countriesService,null);
+            PersonsController personsController = new PersonsController(_personAdderService, _personUpdaterService, _personDeleterService, _personGetterService, _personSorterService, _countriesService,null);
 
             // Act
             personsController.ModelState.AddModelError("PersonName", "Person Name Can't Be Blank");
