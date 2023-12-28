@@ -47,6 +47,8 @@ namespace CRUDWebApplication.StartupExtensions
 
             // add services into IOC container 
             // i want create the instace for life time if application is started 
+
+
             services.AddScoped<ICountriesService, CountriesService>();
             services.AddScoped<IContriesRepository, CountriesRepository>();
 
@@ -59,6 +61,7 @@ namespace CRUDWebApplication.StartupExtensions
             services.AddScoped<IPersonUpdaterService, PersonUpdaterService>();
             services.AddScoped<IPersonDeleterService, PersonDeleterService>();
             services.AddScoped<IPersonGetterService, PersonGetterService>();
+            services.AddScoped<IPersonGetterService, PersonGetterServiceWithExcelFewField>();
             services.AddScoped<IPersonSorterService, PersonSorterService>();
 
 
