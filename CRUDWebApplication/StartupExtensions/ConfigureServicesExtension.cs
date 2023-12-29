@@ -61,7 +61,7 @@ namespace CRUDWebApplication.StartupExtensions
             services.AddScoped<IPersonUpdaterService, PersonUpdaterService>();
             services.AddScoped<IPersonDeleterService, PersonDeleterService>();
             services.AddScoped<IPersonGetterService, PersonGetterService>();
-            services.AddScoped<IPersonGetterService, PersonsGetterServiceChild>();
+            services.AddScoped<IPersonGetterService, PersonGetterServiceWithExcelFewField>();
             services.AddScoped<IPersonSorterService, PersonSorterService>();
 
 
