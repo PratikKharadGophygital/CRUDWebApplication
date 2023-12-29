@@ -127,7 +127,7 @@ namespace Services
         
 
 
-        public async Task<List<PersonResponse>> GetAllPersonList()
+        public virtual async Task<List<PersonResponse>> GetAllPersonList()
         {
             _logger.LogInformation("GetAllPersonList in PersonService");
             /*var persons = await _personsRepository.Include("Country").ToListAsync(); */// Include with use the properti define name
@@ -136,7 +136,7 @@ namespace Services
                 .Select(temp => temp.ToPersonResponse()).ToList();
         }
 
-        public async Task<PersonResponse?> GetPersonByPersonID(Guid? personID)
+        public virtual async Task<PersonResponse?> GetPersonByPersonID(Guid? personID)
         {
             if (personID == null) return null;
 
@@ -148,7 +148,7 @@ namespace Services
 
         }
 
-        public async Task<List<PersonResponse>?> GetFilteredPerson(string searchBy, string? searchString)
+        public virtual async Task<List<PersonResponse>?> GetFilteredPerson(string searchBy, string? searchString)
         {
             _logger.LogInformation("GetPersonByPersonID of Personservice ");
             List<PersonResponse> allPersons = await GetAllPersonList();
@@ -196,7 +196,7 @@ namespace Services
         }
 
 
-        public async Task<MemoryStream> GetPersonCSV()
+        public virtual async Task<MemoryStream> GetPersonCSV()
         {
             try
             
@@ -259,7 +259,7 @@ namespace Services
 
         }
 
-        public async Task<MemoryStream> GetPersonsExcel()
+        public virtual async Task<MemoryStream> GetPersonsExcel()
         {
             MemoryStream memoryStream = new MemoryStream();
             using(ExcelPackage excelPackage = new ExcelPackage(memoryStream))

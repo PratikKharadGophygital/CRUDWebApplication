@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GitProject\\CRUDWebApplication\\ServiceContracts\\ServiceContracts.csproj": {}
+    "C:\\ProjectFiles\\Learning_Project\\Git\\CRUDWebApplication\\ServiceContracts\\ServiceContracts.csproj": {}
   },
   "projects": {
-    "D:\\GitProject\\CRUDWebApplication\\Entities\\Entities.csproj": {
+    "C:\\ProjectFiles\\Learning_Project\\Git\\CRUDWebApplication\\Entities\\Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GitProject\\CRUDWebApplication\\Entities\\Entities.csproj",
+        "projectUniqueName": "C:\\ProjectFiles\\Learning_Project\\Git\\CRUDWebApplication\\Entities\\Entities.csproj",
         "projectName": "Entities",
-        "projectPath": "D:\\GitProject\\CRUDWebApplication\\Entities\\Entities.csproj",
-        "packagesPath": "C:\\Users\\pratik.kharad\\.nuget\\packages\\",
-        "outputPath": "D:\\GitProject\\CRUDWebApplication\\Entities\\obj\\",
+        "projectPath": "C:\\ProjectFiles\\Learning_Project\\Git\\CRUDWebApplication\\Entities\\Entities.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\ProjectFiles\\Learning_Project\\Git\\CRUDWebApplication\\Entities\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pratik.kharad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -57,8 +57,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -67,21 +66,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\GitProject\\CRUDWebApplication\\ServiceContracts\\ServiceContracts.csproj": {
+    "C:\\ProjectFiles\\Learning_Project\\Git\\CRUDWebApplication\\ServiceContracts\\ServiceContracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GitProject\\CRUDWebApplication\\ServiceContracts\\ServiceContracts.csproj",
+        "projectUniqueName": "C:\\ProjectFiles\\Learning_Project\\Git\\CRUDWebApplication\\ServiceContracts\\ServiceContracts.csproj",
         "projectName": "ServiceContracts",
-        "projectPath": "D:\\GitProject\\CRUDWebApplication\\ServiceContracts\\ServiceContracts.csproj",
-        "packagesPath": "C:\\Users\\pratik.kharad\\.nuget\\packages\\",
-        "outputPath": "D:\\GitProject\\CRUDWebApplication\\ServiceContracts\\obj\\",
+        "projectPath": "C:\\ProjectFiles\\Learning_Project\\Git\\CRUDWebApplication\\ServiceContracts\\ServiceContracts.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\ProjectFiles\\Learning_Project\\Git\\CRUDWebApplication\\ServiceContracts\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pratik.kharad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -95,8 +94,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\GitProject\\CRUDWebApplication\\Entities\\Entities.csproj": {
-                "projectPath": "D:\\GitProject\\CRUDWebApplication\\Entities\\Entities.csproj"
+              "C:\\ProjectFiles\\Learning_Project\\Git\\CRUDWebApplication\\Entities\\Entities.csproj": {
+                "projectPath": "C:\\ProjectFiles\\Learning_Project\\Git\\CRUDWebApplication\\Entities\\Entities.csproj"
               }
             }
           }
@@ -122,8 +121,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -132,7 +130,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
