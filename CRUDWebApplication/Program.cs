@@ -8,6 +8,7 @@ using RepositoryContracts;
 using Serilog;
 using ServiceContracts;
 using Services;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,12 @@ builder.Host.UseSerilog((HostBuilderContext context, IServiceProvider services, 
     .ReadFrom.Services(services); // Read out current apps services and make them available to serilog
 });
 
+
+
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//{
+//    options.UseSqlServer(Configuration..GetConnectionString("DefaultConnection"));
+//});
 // Using Extension Method for services 
 // Using parameter send the value of builder.Configuration for extension method because extension method does not access the builder services that the reason we are pass the value of the parameter 
 builder.Services.ConfigureServices(builder.Configuration);
@@ -78,15 +85,15 @@ if (builder.Environment.IsEnvironment("Test") == false)
 
 app.UseStaticFiles();
 
+// Reading Identity cookie
+app.UseAuthentication();
+
+// Identitying action method based route
 app.UseRouting();
 
+// Execute the filter pipiline (action + filters) 
 app.MapControllers();
 
-app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 

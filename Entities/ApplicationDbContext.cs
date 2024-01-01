@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Entities.IdentityEntities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 namespace Entities
 {
     // PersonsDbContext => Represent the sql server Database Name
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser,ApplicationRole,Guid>
     {
         // database string pass through this constructor to the parent class  program.cs > Dbcontext > parent
         public ApplicationDbContext(DbContextOptions options) : base(options)

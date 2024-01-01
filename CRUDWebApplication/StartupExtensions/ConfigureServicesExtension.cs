@@ -1,9 +1,12 @@
 ﻿using CRUDWebApplication.Filters.ActionFilters;
 using Entities;
+using Entities.IdentityEntities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using RepositoryContracts;
-using ServiceContracts;
+using ServiceContracts; 
 using Services;
 
 namespace CRUDWebApplication.StartupExtensions
@@ -12,18 +15,7 @@ namespace CRUDWebApplication.StartupExtensions
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services,IConfiguration configuration)
         {
-            // EF core connection with sql server by default is services as scoped services 
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            });
-
-            services.AddHttpLogging(options =>
-            {
-                options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties |
-                Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponsePropertiesAndHeaders;
-
-            });
+          
 
             // Add services to the container. 
             // It add controller and views as services
@@ -47,25 +39,46 @@ namespace CRUDWebApplication.StartupExtensions
 
             // add services into IOC container 
             // i want create the instace for life time if application is started 
-
+            services.AddTransient<PersonListActionFilters>();
 
             services.AddScoped<ICountriesService, CountriesService>();
             services.AddScoped<IContriesRepository, CountriesRepository>();
-
-            services.AddScoped<IPersonService_, PersonService_>();
-            services.AddScoped<IPersonsRepository, PersonRepository>();
-
-            services.AddTransient<PersonListActionFilters>();
-
+            //services.AddScoped<IPersonService_, PersonService_>();       
             services.AddScoped<IPersonAdderService, PersonAdderService>();
             services.AddScoped<IPersonUpdaterService, PersonUpdaterService>();
             services.AddScoped<IPersonDeleterService, PersonDeleterService>();
             services.AddScoped<IPersonGetterService, PersonGetterService>();
-            services.AddScoped<IPersonGetterService, PersonGetterServiceWithExcelFewField>();
+            //services.AddScoped<IPersonGetterService, PersonGetterServiceWithExcelFewField>();
             services.AddScoped<IPersonSorterService, PersonSorterService>();
+            services.AddScoped<IPersonsRepository, PersonRepository>();
 
+            // Add the identity Service
+            services.AddIdentity<ApplicationUser,ApplicationRole>(options =>
+            {
+                options.Password.RequiredLength = 8;
+                // Special chara mandatory or not 
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredUniqueChars = 3; // Eg:Ab12Ab
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders()
+                .AddUserStore<UserStore<ApplicationUser, ApplicationRole,ApplicationDbContext,Guid>>()
+                .AddRoleStore<RoleStore<ApplicationRole,ApplicationDbContext, Guid>>();
 
+            // EF core connection with sql server by default is services as scoped services 
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            });
 
+            services.AddHttpLogging(options =>
+            {
+                options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties |
+                Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponsePropertiesAndHeaders;
+
+            });
 
 
             return services;

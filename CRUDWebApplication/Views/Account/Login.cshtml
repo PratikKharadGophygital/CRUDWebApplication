@@ -1,0 +1,85 @@
+﻿@model LoginDTO
+@{
+    ViewBag.Title = "Login";
+    ViewBag.CurrentUrl = "~/Account/Login";
+}
+
+<div>
+    <span>Contacts</span>
+    <i class="fa-solid fa-caret-right"></i>
+    <span>Register</span>
+
+</div>
+<div>
+   Not Yet Register?<a asp-action="Register" asp-controller="Account" class="link-hover">Login</a>
+    <h2 class="text-lg-center">Login</h2>
+
+    <form asp-controller="Account" asp-action="Login" method="post">
+
+    
+
+        @*Email*@
+        <div class="form-field flex">
+            <div class="w-50">
+                <label asp-for="Email" class="form-label pt">Email</label>
+            </div>
+        </div>
+
+        @*Validation Message*@
+        <div class="flex-1">
+            <input asp-for="Email" class="form-label" />
+            <span asp-validation-for="Email" class="text-red"></span>
+        </div>
+
+        @*Password*@
+        <div class="form-field flex">
+            <div class="w-50">
+                <label asp-for="Password" class="form-label pt">Password</label>
+            </div>
+        </div>
+
+        @*Validation Message*@
+        <div class="flex-1">
+            @*asp-for > this is automatical generate the type for input time does not need to metion type *@
+            <input asp-for="Password" class="form-label" />
+            <span asp-validation-for="Password" class="text-red"></span>
+        </div>
+
+        @*Register Button*@
+        <div class="form-field flex">
+            <div class="w-25">
+                <div class="flex-1">
+                    <button class="button button-green-back" type="submit">Login</button>
+                </div>
+            </div>
+        </div>
+
+        @*All Error Message Show In One Place*@
+        <div asp-validation-summary="All" class="text-red"></div>
+
+        @if (ViewBag.Errors != null)
+        {
+
+            <div class="text-red">
+                <ul>
+                    @foreach (var error in ViewBag.Errors)
+                    {
+                        <li>@error</li>
+                    }
+                </ul>
+
+            </div>
+        }
+
+    </form>
+</div>
+
+@section scripts
+{
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" asp-fallback-test="window.jQuery" asp-fallback-src="~/js/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.4/jquery.validate.min.js" integrity="sha512-FOhq9HThdn7ltbK8abmGn60A/EMtEzIzv1rvuh+DqzJtSGq8BRdEN0U+j0iKEIffiw/yEtVuladk6rsG4X6Uqg==" crossorigin="anonymous" referrerpolicy="no-referrer" asp-fallback-test="window.jQuery.validator" asp-fallback-src="~/js/jquery.validate.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js" integrity="sha512-o6XqxgrUsKmchwy9G5VRNWSSxTS4Urr4loO6/0hYdpWmFUfHqGzawGxeQGMDqYzxjY9sbktPbNlkIQJWagVZQg==" crossorigin="anonymous" referrerpolicy="no-referrer" asp-fallback-test="window.jQuery.validator.unobstrusive" asp-fallback-src="~/js/jquery.validate.unobtrusive.min.js"></script>
+}
