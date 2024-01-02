@@ -13,6 +13,7 @@ using ServiceContracts.Enums;
 
 namespace CRUDWebApplication.Controllers
 {
+    // overrie th conventional rounting 
     [Route("persons")]
     // Handle exception for controller level for filters only model binding both action method and filter 
     // [TypeFilter(typeof(HandleExceptionFilter))]

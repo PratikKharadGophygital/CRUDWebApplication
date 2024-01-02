@@ -42,6 +42,22 @@
             <span asp-validation-for="Email" class="text-red"></span>
         </div>
 
+         @*User type radio button*@
+        <div class="form-field flex">
+            <div class="w-50">
+                <label asp-for="UserType" class="form-label pt">User Type</label>
+            </div>
+        </div>
+
+        @*Validation Message*@
+        <div class="flex-1">
+            <input type="radio" id="User" asp-for="UserType" value="User"  class="form-label" checked />
+             <label for="UserType" >User Type</label>
+            <input type="radio" id="Admin" asp-for="UserType" value="Admin" class="form-label" />
+             <label for="Admin" >Admin</label>
+            
+        </div>
+
         @*Password*@
         <div class="form-field flex">
             <div class="w-50">

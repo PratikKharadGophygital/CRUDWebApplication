@@ -13,7 +13,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CRUDWebApplication</a>
+                @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CRUDWebApplication</a>*@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -27,37 +27,48 @@
                             <li class="nav-item">
                                 @User.Identity?.Name
                             </li>
+                            // User is the in build propery in claims and user property in razor pazges in base class  which is the common parent class for all the views in mvc
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin Home</a>
+                                </li>
+                            }
+
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                             </li>
+
                         }
                         else
-                        @*   check the which url is active      *@
-                            @if(ViewBag.CurrentUrl == "~/Account/Register")
+                        {
+
+                            @if (ViewBag.CurrentUrl == "~/Account/Register")
                             {
-                                  <li class="nav-item">
+                                @*   check the which url is active      *@
+
+                                <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register" style="background-color:red;">Register</a>
                                 </li>
                             }
                             else
                             {
-                                  <li class="nav-item">
+                                <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                                 </li>
-                            }            
-                          
+
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                                 </li>
+                            }
+
 
                         }
-                        <li class="nav-item">
-                           @*ClaimsPrinciple object show the current working users*@
+                        @*  <li class="nav-item">*@
+                        @*ClaimsPrinciple object show the current working users*@
 
-                            @{
-                                @User.Identity?.Name;
-                            }
-                        </li>
+
+                        @*</li>*@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>

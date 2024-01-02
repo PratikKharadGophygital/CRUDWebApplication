@@ -73,6 +73,19 @@ namespace CRUDWebApplication.StartupExtensions
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddAuthorization(options =>
+            {
+                // enforces authoriation policy (user must be authenticated ) for all the action methods 
+                options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser().Build();
+            });
+
+            // Identity Cookies not found send the usre in login page
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LogoutPath = "/Account/Login";
+            });
+
             services.AddHttpLogging(options =>
             {
                 options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties |

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using ServiceContracts.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,6 +16,8 @@ namespace ServiceContracts.DTO
 
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Enter the proper email address")]
+        // Remote : This create the run time javascript code and call the action method this is async request send when user enter the value in email fild. Just declare the controller name and action method name  This is the validation also make sure install this nuget package [AspNetCore ViewFeatures]
+        [Remote(action: "IsEmailAlreadtRegistered",controller: "Account", ErrorMessage = "Email is already use")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "PhoneNumber is required")]
@@ -29,6 +33,8 @@ namespace ServiceContracts.DTO
         [DataType(DataType.Password)]
         [Compare("Password",ErrorMessage ="Password and confirm password do not match")]
         public string ConfirmPassword { get; set; }
+
+        public UserTypeOptions UserType { get; set; } = UserTypeOptions.User;
       
     }
 }

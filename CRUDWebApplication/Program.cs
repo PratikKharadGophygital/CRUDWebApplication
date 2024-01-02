@@ -85,16 +85,37 @@ if (builder.Environment.IsEnvironment("Test") == false)
 
 app.UseStaticFiles();
 
-// Reading Identity cookie
-app.UseAuthentication();
+
 
 // Identitying action method based route
 app.UseRouting();
 
+// Reading Identity cookie and check user login or not 
+app.UseAuthentication();
+
+// Check User have access or not praticular resources
+app.UseAuthorization();
+
 // Execute the filter pipiline (action + filters) 
 app.MapControllers();
 
+// This is default routing and conventional routing now days not use this  so if you declare here then dont need to declare the controller
+// This is the global conventional routing 
+app.UseEndpoints(endpoints =>
+{
+    // This is the conventional rounting for the 'Area'
+    endpoints.MapControllerRoute(
+        name:"areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}"
+        // Admin/Home/Index
+        );
 
+    // Default for genral users
+    endpoints.MapControllerRoute(
+        name:"default",
+        pattern:"{controller}/{action}/{Id?}"
+        );
+});
 app.Run();
 
 // Create for integration testing 

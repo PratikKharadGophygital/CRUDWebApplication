@@ -1,11 +1,13 @@
 ﻿using CRUDWebApplication.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace CRUDWebApplication.Controllers
 {
-    [Route("home")]
+    [Route("[Controller]/[action]")]
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

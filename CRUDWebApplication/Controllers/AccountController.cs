@@ -1,20 +1,25 @@
 ﻿using Entities.IdentityEntities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ServiceContracts.DTO;
+using ServiceContracts.Enums;
 
 namespace CRUDWebApplication.Controllers
 {
     [Route("[Controller]/[action]")]
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
@@ -41,10 +46,32 @@ namespace CRUDWebApplication.Controllers
                 PersonName = registerDTO.PersonName
             };
 
-            IdentityResult result = await _userManager.CreateAsync(applicationUser);
+            IdentityResult result = await _userManager.CreateAsync(applicationUser, registerDTO.Password);
 
             if (result.Succeeded)
             {
+                if (registerDTO.UserType == UserTypeOptions.Admin)
+                {
+                    // Create 'Admin' role if role manager not found the admin role 
+                    if (await _roleManager.FindByNameAsync(UserTypeOptions.Admin.ToString()) is null)
+                    {
+                        ApplicationRole applicationRole = new ApplicationRole()
+                        {
+                            Name = UserTypeOptions.Admin.ToString()
+
+                        };
+                        await _roleManager.CreateAsync(applicationRole);                      
+                       
+                    }
+                    // Add the new user into 'Admin' role
+                    await _userManager.AddToRoleAsync(applicationUser, UserTypeOptions.Admin.ToString());
+                }               
+                else
+                {
+                    // Add the new user into 'User' role
+                    await _userManager.AddToRoleAsync(applicationUser, UserTypeOptions.User.ToString());
+                }              
+               
                 await _signInManager.SignInAsync(applicationUser,isPersistent:true);
                 return RedirectToAction(nameof(PersonsController.Index), "Persons");
             }
@@ -66,7 +93,7 @@ namespace CRUDWebApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginDTO loginDTO)
+        public async Task<IActionResult> Login(LoginDTO loginDTO,string? ReturnUrl)
         {
             if (ModelState.IsValid == false)
             {
@@ -74,12 +101,27 @@ namespace CRUDWebApplication.Controllers
 
                 return View(loginDTO);
             }
-
+             
            var result = await _signInManager.PasswordSignInAsync(loginDTO.Email, loginDTO.Password,isPersistent:true,lockoutOnFailure:true);
 
             if (result.Succeeded)
             {
-                return RedirectToAction(nameof(PersonsController.Index), "Persons");
+                ApplicationUser applicationUser = await _userManager.FindByNameAsync(loginDTO.Email);
+                if(applicationUser != null)
+                {
+                    if (await _userManager.IsInRoleAsync(applicationUser,UserTypeOptions.Admin.ToString()))
+                    {
+                        // Mention this area for the find the admin controller 
+                        return RedirectToAction("Index", "Home", new { area = "Admin" });
+                    }
+                }
+
+                // Help to cross posting attack if only redirect then same domain found 
+                if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+                {
+                    // Local meas the same domain name direct
+                    return LocalRedirect(ReturnUrl);
+                } 
             }
 
             ModelState.AddModelError("Login", "Invalid email or password");
@@ -92,6 +134,22 @@ namespace CRUDWebApplication.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction(nameof(PersonsController.Index), "Persons");
+        }
+
+        public async Task<IActionResult> IsEmailAlreadtRegistered(string email)
+        {
+            ApplicationUser user =  await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                // Browser only recive the json result 
+                // email address Valid 
+                return Json(true);
+            }
+            else
+            {
+                // Invalid email address 
+                return Json(false);
+            }
         }
 
     }
