@@ -6,16 +6,16 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using RepositoryContracts;
-using ServiceContracts; 
+using ServiceContracts;
 using Services;
 
 namespace CRUDWebApplication.StartupExtensions
 {
     public static class ConfigureServicesExtension
     {
-        public static IServiceCollection ConfigureServices(this IServiceCollection services,IConfiguration configuration)
+        public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
-          
+
 
             // Add services to the container. 
             // It add controller and views as services
@@ -53,19 +53,19 @@ namespace CRUDWebApplication.StartupExtensions
             services.AddScoped<IPersonsRepository, PersonRepository>();
 
             // Add the identity Service
-            services.AddIdentity<ApplicationUser,ApplicationRole>(options =>
-            {
-                options.Password.RequiredLength = 8;
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+             {
+                 options.Password.RequiredLength = 8;
                 // Special chara mandatory or not 
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireDigit = false;
-                options.Password.RequiredUniqueChars = 3; // Eg:Ab12Ab
+                 options.Password.RequireUppercase = true;
+                 options.Password.RequireLowercase = true;
+                 options.Password.RequireDigit = false;
+                 options.Password.RequiredUniqueChars = 3; // Eg:Ab12Ab
             }).AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
-                .AddUserStore<UserStore<ApplicationUser, ApplicationRole,ApplicationDbContext,Guid>>()
-                .AddRoleStore<RoleStore<ApplicationRole,ApplicationDbContext, Guid>>();
+                .AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, Guid>>()
+                .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, Guid>>();
 
             // EF core connection with sql server by default is services as scoped services 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -78,6 +78,17 @@ namespace CRUDWebApplication.StartupExtensions
                 // enforces authoriation policy (user must be authenticated ) for all the action methods 
                 options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser().Build();
+
+                // Custom Authorization Policy
+                options.AddPolicy("NotAuthorized", policy =>
+                {
+                    policy.RequireAssertion(context =>
+                    {
+                        // If  IsAuthenticated  return true then operator  convert into false. 
+                        // If  IsAuthenticated  return false then operator convert into true.
+                        return ! context.User.Identity.IsAuthenticated;
+                    });
+                });
             });
 
             // Identity Cookies not found send the usre in login page

@@ -57,6 +57,13 @@ else
     app.UseExceptionHandlingMiddleware();
 }
 
+// force the browser enalbe the https protocal all request and response force to the enable the https 
+// Hsts stand for the HTTP Strict Transport Security
+app.UseHsts();
+
+// It is inform the browser use the HTTPS pr
+app.UseHttpsRedirection();
+
 // Enable endpoint completion log that means adds ab extra log message as soon as the request response is completed
 app.UseSerilogRequestLogging();
 
@@ -103,7 +110,7 @@ app.MapControllers();
 // This is the global conventional routing 
 app.UseEndpoints(endpoints =>
 {
-    // This is the conventional rounting for the 'Area'
+    // This is the conventional rounting for the 'Area' 
     endpoints.MapControllerRoute(
         name:"areas",
         pattern: "{area:exists}/{controller=Home}/{action=Index}"

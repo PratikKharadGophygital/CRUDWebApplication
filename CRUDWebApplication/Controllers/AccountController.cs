@@ -8,7 +8,7 @@ using ServiceContracts.Enums;
 namespace CRUDWebApplication.Controllers
 {
     [Route("[Controller]/[action]")]
-    [AllowAnonymous]
+    //[AllowAnonymous] If we are working with custom policy remove the allowanonymous on controller level.
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -23,12 +23,14 @@ namespace CRUDWebApplication.Controllers
         }
 
         [HttpGet]
+        [Authorize("NotAuthorized")] // Custom policy name 
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize("NotAuthorized")] // Custom policy name 
         public async Task<IActionResult> Register(RegisterDTO registerDTO)
         {
             if (ModelState.IsValid == false)
@@ -87,12 +89,14 @@ namespace CRUDWebApplication.Controllers
         }
 
         [HttpGet]
+        [Authorize("NotAuthorized")] // Custom policy name 
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize("NotAuthorized")] // Custom policy name 
         public async Task<IActionResult> Login(LoginDTO loginDTO,string? ReturnUrl)
         {
             if (ModelState.IsValid == false)
